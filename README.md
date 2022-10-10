@@ -5,7 +5,7 @@ Please note: This action is currently only able to delete packages for a **user*
 ### Example usage:
 ```yaml
 # In this example GHCR_TOKEN has the packages:delete permission
-- uses: mitchfen/cleanup-untagged-container-images@v1
+- uses: mitchfen/cleanup-untagged-container-images@v1.0.1
   with:
     username: 'mitchfen'
     container-name: 'highsec-ore-price-checker'
