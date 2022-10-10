@@ -13,10 +13,8 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
+    - run: python ${{ github.action_path }}/cleanupTaglessImages.py
       shell: bash
-    - run: cleanupTaglessImages.py
-      shell: python
       env:
         GITHUB_TOKEN: ${{ inputs.token }}
         CONTAINER_NAME: ${{ inputs.container-name }}
