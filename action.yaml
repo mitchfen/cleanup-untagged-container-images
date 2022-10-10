@@ -13,7 +13,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: python ${{ github.action_path }}/cleanupTaglessImages.py
+    - run: python ${{ github.action_path }}/cleanupUntaggedImages.py
       shell: bash
       env:
         GITHUB_TOKEN: ${{ inputs.token }}

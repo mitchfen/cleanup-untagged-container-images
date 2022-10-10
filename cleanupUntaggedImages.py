@@ -23,7 +23,7 @@ for i in range(len(response)):
     if (len(tags) == 0):
         taglessImages.append(response[i]['id'])
 if (len(taglessImages) == 0):
-    print("✅ No tagless images to delete ✅")
+    print("No untagged images to delete.")
 else:
     apiUrl = " https://api.github.com/user/packages/container/" + CONTAINER_NAME + "/versions/"
     for i in range(len(taglessImages)):
@@ -31,6 +31,7 @@ else:
         id = str(taglessImages[i])
         apiUrl += id # append version to be deleted to the apiUrl
         command = "curl -s -X DELETE " + headers + apiUrl
-        print("❌ Deleting " + id)
+        print("❌ Deleting " + id + "...", end=" ")
         os.system(command)
-    print("✅ Done ")
+        print("done.")
+    print("✅ Done!")
