@@ -1,0 +1,21 @@
+name: 'Cleanup untagged container images'
+description: 'Delete untagged images for a given container name'
+inputs:
+  username:
+    description: 'Username of container owner.'
+    required: true
+  container-name:
+    description: 'Name of container to delete untagged images for.'
+    required: true
+  token:
+    description: 'Token with package delete permission.'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - run: python ./cleanupTaglessImages.py
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.token }}
+        CONTAINER_NAME: ${{ inputs.container-name }}
+        USERNAME: ${{ inputs.username }}
