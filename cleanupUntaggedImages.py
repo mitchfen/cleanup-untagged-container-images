@@ -1,37 +1,43 @@
-import json, os
+import json, requests
 
-CONTAINER_NAME = os.environ['CONTAINER_NAME']
-USERNAME = os.environ['USERNAME']
-GITHUB_TOKEN = os.environ['GITHUB_TOKEN']
+def getUntaggedImageVersions(headers, username, containerName):
+    apiUrl = " https://api.github.com/users/" + username + "/packages/container/" + containerName + "/versions"
+    response = requests.get(apiUrl, headers=headers)
 
-headers = " -H \"Accept: application/vnd.github+json\" -H \"Authorization: Bearer " + GITHUB_TOKEN + "\""
-apiUrl = " https://api.github.com/users/" + USERNAME + "/packages/container/" + CONTAINER_NAME + "/versions"
+    if (response.status_code != 200 ):
+        print("Status code was " + str(response.status_code))
+        raise Exception(str(response.text))
 
-command = "curl -s" + headers + apiUrl + " > temp.json"
-os.system(command)
+    responseContent = json.loads(response.content)
+    untaggedImageVersions = []
+    for i in range(len(responseContent)):
+        tags = responseContent[i]['metadata']['container']['tags']
+        if (len(tags) == 0):
+            untaggedImageVersions.append(responseContent[i]['id'])
+    return untaggedImageVersions
 
-with open('temp.json') as f:
-  contents = f.read()
-response = json.loads(contents)
-os.system("rm ./temp.json")
-
-# TODO: if response.message = "Package not found." throw
-
-taglessImages = []
-for i in range(len(response)):
-    tags = response[i]['metadata']['container']['tags']
-    if (len(tags) == 0):
-        taglessImages.append(response[i]['id'])
-if (len(taglessImages) == 0):
-    print("No untagged images to delete.")
-else:
-    apiUrl = " https://api.github.com/user/packages/container/" + CONTAINER_NAME + "/versions/"
-    for i in range(len(taglessImages)):
+def removeUntaggedImages(headers, username, containerName, untaggedImageVersions):
+    for i in untaggedImageVersions:
         apiUrl = " https://api.github.com/users/" + USERNAME + "/packages/container/" + CONTAINER_NAME + "/versions/"
-        id = str(taglessImages[i])
-        apiUrl += id # append version to be deleted to the apiUrl
-        command = "curl -s -X DELETE " + headers + apiUrl
-        print("❌ Deleting " + id + "...", end=" ")
-        os.system(command)
+        apiUrl += str(i) # append version to be deleted
+        print("❌ Deleting " + str(i) + "...", end=" ")
+        requests.delete(apiUrl, headers=headers)
         print("done.")
-    print("✅ Done!")
+    print("✅ All untagged images deleted.")
+
+def main():
+    CONTAINER_NAME = os.environ['CONTAINER_NAME']
+    USERNAME = os.environ['USERNAME']
+    GITHUB_TOKEN = os.environ['GITHUB_TOKEN']
+    headers = {'Authorization': 'Bearer ' + GITHUB_TOKEN}
+
+    untaggedImageVersions = getUntaggedImageVersions(headers, USERNAME, CONTAINER_NAME)
+
+    if (len(untaggedImageVersions) == 0):
+        print("No untagged images to delete!")
+        quit()
+
+    removeUntaggedImages(headers, USERNAME, CONTAINER_NAME, untaggedImageVersions)
+
+if __name__ == '__main__':
+    main()
