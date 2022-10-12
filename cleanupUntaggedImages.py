@@ -1,4 +1,4 @@
-import json, requests
+import os, json, requests
 
 def getUntaggedImageVersions(headers, username, containerName):
     apiUrl = " https://api.github.com/users/" + username + "/packages/container/" + containerName + "/versions"
