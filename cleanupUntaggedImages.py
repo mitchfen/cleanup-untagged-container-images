@@ -18,7 +18,7 @@ def getUntaggedImageVersions(headers, username, containerName):
 
 def removeUntaggedImages(headers, username, containerName, untaggedImageVersions):
     for i in untaggedImageVersions:
-        apiUrl = " https://api.github.com/users/" + USERNAME + "/packages/container/" + CONTAINER_NAME + "/versions/"
+        apiUrl = " https://api.github.com/users/" + username + "/packages/container/" + containerName + "/versions/"
         apiUrl += str(i) # append version to be deleted
         print("❌ Deleting " + str(i) + "...", end=" ")
         requests.delete(apiUrl, headers=headers)
