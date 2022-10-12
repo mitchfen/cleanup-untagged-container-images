@@ -1,5 +1,4 @@
-This repository contains a GitHub action that can be used to delete untagged container images for a specified user.  
-
+A GitHub action that can be used to delete untagged container images for a specified user.  
 Please note: This action is currently only able to delete packages for a **user** not an organization.
 
 ### Example usage:
