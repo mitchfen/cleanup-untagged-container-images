@@ -1,5 +1,5 @@
 name: 'Cleanup untagged container images'
-description: 'Delete untagged images for a given container name'
+description: 'Delete untagged container images on ghcr.io for a user and container name.'
 author: mitchfen
 branding:
   icon: trash
