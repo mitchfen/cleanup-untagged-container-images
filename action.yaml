@@ -1,5 +1,9 @@
 name: 'Cleanup untagged container images'
 description: 'Delete untagged images for a given container name'
+author: mitchfen
+branding:
+  icon: trash
+  color: orange
 inputs:
   username:
     description: 'Username of container owner.'
