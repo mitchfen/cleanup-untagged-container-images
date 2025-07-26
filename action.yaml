@@ -12,7 +12,7 @@ inputs:
     description: 'Name of container to delete untagged images for.'
     required: true
   token:
-    description: 'Token with package delete permission.'
+    description: 'Token with package read and delete permission.'
     required: true
 runs:
   using: "composite"

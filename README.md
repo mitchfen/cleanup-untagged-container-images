@@ -2,14 +2,13 @@ A GitHub action that can be used to delete untagged container images for a speci
 
 ### Example usage:
 ```yaml
-# In this example GHCR_TOKEN has the packages:delete permission
 - uses: mitchfen/cleanup-untagged-container-images@v1
   with:
     username: 'mitchfen'
-    container-name: 'mitchfen.xyz'
+    container-name: 'nanoleaf-controller'
     token: ${{ secrets.GHCR_TOKEN }}
 ```
 
 ### Example output:
-![screenshot-of-action-output](./screenshots/cleanupUntaggedImages.png)
+![screenshot-of-action-output](./screenshot.png)
 
